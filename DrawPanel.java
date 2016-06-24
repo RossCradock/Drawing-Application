@@ -10,6 +10,12 @@ import java.util.Scanner; // get the scanner to allow user inputs
 public class DrawPanel extends JPanel {
 	private Random random = new Random(); // Random object to create random numbers and booleans
 	private MyShape shapes[]; // declare array of class objects MyShape
+	private int shapeType; // declare the int which corresponds to the type of shape
+	private MyShape currentShape; // declare a MyShape object for the user's currently selected shape type
+	private Color currentColor; // declare a Color object for the user's currently selected co
+	private boolean filledShape; // declare a boolean flag which the user 
+	private JLabel statusLabel; // declare the JLabel which will describe the current coordinates
+	
 	private int numberOfLines; // declare an int for the number of lines to be drawn, inputted by the user
 	private int numberOfRects; // declare an int for the number of rectangles to be drawn, inputted by the user
 	private int numberOfOvals; // declare an int for the number of ovals to be drawn, inputted by the user
@@ -61,7 +67,7 @@ public class DrawPanel extends JPanel {
 				random.nextInt(256), random.nextInt(256)); // generate a random color
 			boolean fill = random.nextBoolean(); // generate a random boolean
 			shapes[count] = new MyOval(x1, y1, x2, y2, color, fill); // add the oval to the array of shapes to be displayed
-		} // end for loop 
+		} // end for 
     } // end DrawPanel constructor
 	
 	// method to return the number of shapes used
