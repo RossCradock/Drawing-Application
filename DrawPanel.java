@@ -67,7 +67,7 @@ public class DrawPanel extends JPanel {
 				random.nextInt(256), random.nextInt(256)); // generate a random color
 			boolean fill = random.nextBoolean(); // generate a random boolean
 			shapes[count] = new MyOval(x1, y1, x2, y2, color, fill); // add the oval to the array of shapes to be displayed
-		} // end for 
+		} // end for loop
     } // end DrawPanel constructor
 	
 	// method to return the number of shapes used
