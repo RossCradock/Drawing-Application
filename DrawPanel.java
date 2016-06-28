@@ -18,8 +18,13 @@ public class DrawPanel extends JPanel {
 	private JLabel statusLabel; // declare the JLabel which will describe the current coordinates
 	
 	// Constructor that creates a panel with the random shapes
-	public DrawPanel() {
+	public DrawPanel(JLabel status) {
 		setBackground(Color.WHITE);
+		statusLabel = status; // initialise the status label with the JLabel opbject passed to the constructor
+		shapes = new MyShape[100]; // initiialise array of shapes to length of 100 elements
+		shapeType = 1;
+		currentShape = null;
+		currentColor = Color.BLACK;
 		Scanner input = new Scanner(System.in); // initialise the the scanner object for reading user inputs
 		System.out.println("Enter the number of lines to be drawn :"); // ask the user for number of lines
 		numberOfLines = input.nextInt(); // read the number of lines and store in variable
