@@ -1,6 +1,7 @@
-// Ross Cradock.
-// Program that uses class MyShape to draw random shapes and lines.
-
+/*
+ Ross Cradock.
+ Program that uses class MyShape to draw random shapes and lines.
+*/
 import java.awt.Color; // get colors from the abstract window toolkit
 import java.awt.Graphics; // get graphics from the abstract window toolkit
 import javax.swing.JPanel; // get the drawing panel from the swing framework
