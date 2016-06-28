@@ -85,8 +85,19 @@ public class DrawPanel extends JPanel {
 	
 	// method to remove the latest most shape from the container
 	public void clearLastShape(shapeCount) {
-		
+		// check to make sure the currentShape will never go below zero
+		if(currentShape >= 1){
+			currentShape--;
+			repaint();
+		}
 	}
+	
+	// method to remove all the shapes from the container
+	public void clearDrawing() {
+		currentShape = 0;
+		repaint();
+	}
+	
 	// method to return the number of shapes used
 	public String status() {
 		return String.format("%s: %d, %s: %d, %s: %d",
@@ -99,8 +110,11 @@ public class DrawPanel extends JPanel {
     public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		// draw the shapes
-		for(MyShape shape : shapes){
-			shape.draw(g); // polymorphically call the draw method
+		for(int i = 0; i < shapeCount; i++){
+			// check to see if shape array contains a shape
+			if(currentShape != null){
+				shapes[i].draw(g); // polymorphically call the draw method
+			}
 		} // end for loop
 	} // end method paintComponent
 	
