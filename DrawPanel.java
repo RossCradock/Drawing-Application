@@ -5,8 +5,8 @@
 import java.awt.Color; // get colors from the abstract window toolkit
 import java.awt.Graphics; // get graphics from the abstract window toolkit
 import javax.swing.JPanel; // get the drawing panel from the swing framework
-import javax.swing.JLabel;
-import java.awt.event.MouseEvent;
+import javax.swing.JLabel; // get the JLabel from the swing framework
+import java.awt.event.MouseEvent; // get the 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionListener;
 //import java.awt.event.MouseListener;
