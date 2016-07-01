@@ -3,12 +3,22 @@
  
 */
 
-import java.awt.BorderFrame;
+import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import javax.swing.event.ListSelectionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.event.ListSelectionEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
+import javax.swing.ListSelectionModel;
 
 public class DrawFrame extends JFrame {
 	private JButton undoButton;
@@ -16,7 +26,6 @@ public class DrawFrame extends JFrame {
 	private JList colorComboBox;
 	private JList shapeComboBox;
 	private JCheckBox fillCheckBox;
-	private JLabel status;
 	private final String colorNames[] = {"Black", "Blue", "Cyan",
 			"Dark Gray", "Gray", "Green", "Light Gray", "Magenta",
 			"Orange", "Pink", "Red", "White", "Yellow"};
@@ -28,11 +37,14 @@ public class DrawFrame extends JFrame {
 	
 	public DrawFrame() {
 		super("Java Drawing");
-		setFrameLayout(new BorderLayout());
+		JPanel toolbar = new JPanel();
+		setLayout(new BorderLayout());
+		JLabel status = new JLabel("update");
+		add(status, BorderLayout.SOUTH);
 		DrawPanel panel = new DrawPanel(status);
-		
+		add(panel, BorderLayout.CENTER);
 		undoButton = new JButton("Undo");
-		add(undoButton);
+		toolbar.add(undoButton, BorderLayout.NORTH);
 		undoButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				panel.clearLastShape();
@@ -40,7 +52,7 @@ public class DrawFrame extends JFrame {
 		});
 		
 		clearButton = new JButton("Clear");
-		add(clearButton);
+		toolbar.add(clearButton, BorderLayout.NORTH);
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				panel.clearDrawing();
@@ -48,34 +60,39 @@ public class DrawFrame extends JFrame {
 		});
 		
 		colorComboBox = new JList(colorNames);
-		colorComboBox.setVisibleRowCount(5);
+		colorComboBox.setVisibleRowCount(1);
 		colorComboBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		add(new JScrollPane(colorComboBox));
+		toolbar.add(new JScrollPane(colorComboBox), BorderLayout.NORTH);
 		colorComboBox.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
 				panel.setCurrentColor(colors[colorComboBox.getSelectedIndex()]);
+				System.out.printf("color set in drawFrame: %s\n", colors[colorComboBox.getSelectedIndex()].toString());
+				status.setText(String.format("color(%d), shape(%d)", colorComboBox.getSelectedIndex(), shapeComboBox.getSelectedIndex())); // update the label with the mouse coordinates
 			}
 		});
 		
 		shapeComboBox = new JList(shapeNames);
-		shapeComboBox.setVisibleRowCount(3);
+		shapeComboBox.setVisibleRowCount(1);
 		shapeComboBox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		add(new JScrollPane(shapeComboBox));
+		toolbar.add(new JScrollPane(shapeComboBox), BorderLayout.NORTH);
 		shapeComboBox.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent event) {
-				panel.setCurrentshape(shapeComboBox.getSelectedIndex());
+				int type = shapeComboBox.getSelectedIndex();
+				panel.setShapeType(type);
 			}
 		});
 		
 		fillCheckBox = new JCheckBox("Filled");
+		toolbar.add(fillCheckBox, BorderLayout.NORTH);
 		fillCheckBox.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent event) {
-				if(fillCheckBox.isSelected) {
+				if(fillCheckBox.isSelected()) {
 					panel.setShapeFill(true);
 				} else {
 					panel.setShapeFill(false);
 				}
 			}
 		});
+		add(toolbar, BorderLayout.NORTH);
 	}
 }
