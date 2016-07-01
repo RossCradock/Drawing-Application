@@ -40,7 +40,6 @@ public class DrawPanel extends JPanel {
     public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		// draw the shapes
-		
 		for(int i = 0; i < shapeCount; i++){
 			// check to see if shape array contains a shape
 			if(shapes[i] != null){
@@ -88,21 +87,19 @@ public class DrawPanel extends JPanel {
 		
 		// method to handle a pressed mouse event
 		public void mousePressed(MouseEvent event) {
+			shapeCount++;
 			switch (shapeType){ // switch statement dependent on the type of shape currently selected
 				case 0: // case one corresponds to a line shape
 				currentShape = new MyLine(event.getX(), event.getY(), event.getX(), event.getY(), currentColor); // assign the current shape
-				shapeCount++;
 				break;
 				case 1: // case two corresponds to a rectangle shape
 				currentShape = new MyRect(event.getX(), event.getY(), event.getX(), event.getY(), currentColor, filledShape); // assign the current shape
-				shapeCount++;
 				break;
 				case 2: // case three corresponds to a oval shape
 				currentShape = new MyOval(event.getX(), event.getY(), event.getX(), event.getY(), currentColor, filledShape); // assign the current shape
-				shapeCount++;
 				break;
 			}
-			repaint();
+			shapes[shapeCount - 1] = currentShape;
 		} // end mouse pressed method
 		
 		// method to handle a released mouse event
