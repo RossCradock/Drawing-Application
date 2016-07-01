@@ -9,7 +9,7 @@ import javax.swing.JLabel; // get the JLabel from the swing framework
 import java.awt.event.MouseEvent; // get the 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionListener;
-//import java.awt.event.MouseListener;
+import java.awt.event.MouseListener;
 
 
 public class DrawPanel extends JPanel {
@@ -52,7 +52,6 @@ public class DrawPanel extends JPanel {
 	// method to set the shapeType
 	public void setShapeType(int type) {
 		this.shapeType = type;
-		System.out.printf("shape type has been set in drawPanel %d\n", shapeType);
 	}
 	
 	public int getShapeType() {
@@ -85,34 +84,32 @@ public class DrawPanel extends JPanel {
 	}
 	
 	// create inner class to handle all mouse events 
-	private class MouseHandler extends MouseAdapter implements MouseMotionListener/*, MouseListener*/ {
+	private class MouseHandler extends MouseAdapter implements MouseMotionListener, MouseListener {
 		
 		// method to handle a pressed mouse event
 		public void mousePressed(MouseEvent event) {
 			switch (shapeType){ // switch statement dependent on the type of shape currently selected
 				case 0: // case one corresponds to a line shape
 				currentShape = new MyLine(event.getX(), event.getY(), event.getX(), event.getY(), currentColor); // assign the current shape
-				System.out.printf("\n mouse pressed --current color: %s current shape type: %d", currentColor.toString(), getShapeType());
+				shapeCount++;
 				break;
 				case 1: // case two corresponds to a rectangle shape
 				currentShape = new MyRect(event.getX(), event.getY(), event.getX(), event.getY(), currentColor, filledShape); // assign the current shape
+				shapeCount++;
 				break;
 				case 2: // case three corresponds to a oval shape
 				currentShape = new MyOval(event.getX(), event.getY(), event.getX(), event.getY(), currentColor, filledShape); // assign the current shape
+				shapeCount++;
 				break;
 			}
-			/*
-			currentShape.setX1(event.getX()); // set the top left x-coordinate of the shape
-			currentShape.setY1(event.getY()); // set the top left y-coordinate of the shape
-			*/
-			//repaint();
+			repaint();
 		} // end mouse pressed method
 		
 		// method to handle a released mouse event
 		public void mouseReleased(MouseEvent event) {
 			currentShape.setX2(event.getX()); // set the bottom right x-coordinate of the shape
 			currentShape.setY2(event.getY()); // set the bottom right y-coordinate of the shape
-			shapes[++shapeCount] = currentShape; // add the current shape to the shapes array at the position of the shapeCount int and increment it
+			shapes[shapeCount] = currentShape; // add the current shape to the shapes array at the position of the shapeCount int and increment it
 			currentShape = null; // clear the current shape variable so it can be reassigned
 			repaint(); // call the repaint method to redraw to the JPanel
 		} // end mouse released method		
@@ -121,14 +118,14 @@ public class DrawPanel extends JPanel {
 		public void mouseDragged(MouseEvent event) {
 			currentShape.setX2(event.getX()); // repeatedly set the bottom right x-coordinate of the shape
 			currentShape.setY2(event.getY()); // repeatedly set the bottom right x-coordinate of the shape
-			shapes[shapeCount] = currentShape; // repeatedly add the current shape to the shapes array at the position of shape count
+			shapes[shapeCount - 1] = currentShape;
 			repaint(); // call the repaint method to redraw to the JPanel
+			statusLabel.setText(String.format("(%d, %d) ", event.getX(), event.getY())); // update the label with the mouse coordinates
 		} // end mouse dragged method
 		
 		// method to handle the event of the mouse moving
 		public void mouseMoved(MouseEvent event) {
 			statusLabel.setText(String.format("(%d, %d) ", event.getX(), event.getY())); // update the label with the mouse coordinates
 		} //end mouseMoved method 		
-		
 	} // end inner class MouseHandler
 } // end outer class DrawPanel
