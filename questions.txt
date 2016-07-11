@@ -1,1 +1,0 @@
-is it ok to use a JList instead of JComboBox?
