@@ -1,15 +1,16 @@
 /*
  Ross Cradock.
- Program that uses class MyShape to draw random shapes and lines.
+ Program that is used by DrawFrane class create a panel to draw shapes and lines upon.
+ This class utilizes an inner MouseHandler to track and control the mouse inputs
 */
-import java.awt.Color; // get colors from the abstract window toolkit
-import java.awt.Graphics; // get graphics from the abstract window toolkit
-import javax.swing.JPanel; // get the drawing panel from the swing framework
-import javax.swing.JLabel; // get the JLabel from the swing framework
-import java.awt.event.MouseEvent; // get the 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseListener;
+import java.awt.Color; // import  colors from the abstract window toolkit
+import java.awt.Graphics; // import graphics from the abstract window toolkit
+import javax.swing.JPanel; // import the drawing panel from the swing framework
+import javax.swing.JLabel; // import the label from the swing framework
+import java.awt.event.MouseEvent; // import the event object from awt
+import java.awt.event.MouseAdapter; // import the mouse adapter to take care of the unused methods in implemented classes
+import java.awt.event.MouseMotionListener; // import motion listener to track the mouse position whilst it moves
+import java.awt.event.MouseListener; // import the mouse button listener to track the button presses
 
 
 public class DrawPanel extends JPanel {
@@ -24,22 +25,22 @@ public class DrawPanel extends JPanel {
 	// Constructor that creates a panel with the random shapes
 	public DrawPanel(JLabel status) {
 		this.statusLabel = status; // assign the status label with the JLabel opbject passed to the constructor
-		shapes = new MyShape[100]; // initiialise array of shapes to length of 100 elements
+		shapes = new MyShape[100]; // initialise array of shapes to length of 100 elements
 		shapeCount = 0; // assign shape count to zero, the number of shapes in the shapes array
 		shapeType = 0; // assign the default shape type
-		currentShape = null;
-		filledShape = false;
-		setCurrentColor(Color.BLACK);
-		setBackground(Color.WHITE);
-		MouseHandler handler = new MouseHandler();
-		addMouseListener(handler);
-		addMouseMotionListener(handler);
+		currentShape = null; // assign null to the currentShape object
+		filledShape = false; // assign the filledShape boolean to false as default
+		setCurrentColor(Color.BLACK); // set the color selected to black as default
+		setBackground(Color.WHITE); // set the background color white so it can be drawn upon
+		MouseHandler handler = new MouseHandler(); // initialise the mouse handler inner class
+		addMouseListener(handler); // use the handler for the mouse listener
+		addMouseMotionListener(handler); // use the handler for the mouse motion listener
     } // end DrawPanel constructor
 	
 	// for each shape individually call the draw method
     public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		// draw the shapes
+		super.paintComponent(g); // call the superclass constructor and supply the graphics component
+		// draw the shapes from 0 to the length of shapeCount
 		for(int i = 0; i < shapeCount; i++){
 			// check to see if shape array contains a shape
 			if(shapes[i] != null){
@@ -51,10 +52,6 @@ public class DrawPanel extends JPanel {
 	// method to set the shapeType
 	public void setShapeType(int type) {
 		this.shapeType = type;
-	}
-	
-	public int getShapeType() {
-		return shapeType;
 	}
 	
 	// method to set the current color
@@ -71,15 +68,15 @@ public class DrawPanel extends JPanel {
 	public void clearLastShape() {
 		// check to make sure the shape count will never go below zero
 		if(shapeCount >= 1){
-			shapeCount--;
-			repaint();
+			shapeCount--; // decrement the number of shapes to be draw
+			repaint(); // call the paintComponent method
 		}
 	}
 	
 	// method to remove all the shapes from the container
 	public void clearDrawing() {
-		shapeCount = 0;
-		repaint();
+		shapeCount = 0; // make the number of shapes zero
+		repaint(); // call the paintComponent method
 	}
 	
 	// create inner class to handle all mouse events 
@@ -87,19 +84,20 @@ public class DrawPanel extends JPanel {
 		
 		// method to handle a pressed mouse event
 		public void mousePressed(MouseEvent event) {
-			shapeCount++;
+			shapeCount++; // increment the number of shapes to be drawn before the shape is created
 			switch (shapeType){ // switch statement dependent on the type of shape currently selected
 				case 0: // case one corresponds to a line shape
-				currentShape = new MyLine(event.getX(), event.getY(), event.getX(), event.getY(), currentColor); // assign the current shape
+				currentShape = new MyLine(event.getX(), event.getY(), event.getX(), event.getY(), currentColor); // create the current shape
 				break;
 				case 1: // case two corresponds to a rectangle shape
-				currentShape = new MyRect(event.getX(), event.getY(), event.getX(), event.getY(), currentColor, filledShape); // assign the current shape
+				currentShape = new MyRect(event.getX(), event.getY(), event.getX(), event.getY(), currentColor, filledShape); // create the current shape
 				break;
 				case 2: // case three corresponds to a oval shape
-				currentShape = new MyOval(event.getX(), event.getY(), event.getX(), event.getY(), currentColor, filledShape); // assign the current shape
+				currentShape = new MyOval(event.getX(), event.getY(), event.getX(), event.getY(), currentColor, filledShape); // create the current shape
 				break;
 			}
-			shapes[shapeCount - 1] = currentShape;
+			shapes[shapeCount - 1] = currentShape; // assign the currentShape to the shapeCount array index number minus one so that 
+			// the mouse dragged method will be able to repeatedly assign to shapeCount minus one and have the shape drawn to shapeCount indstead
 		} // end mouse pressed method
 		
 		// method to handle a released mouse event
@@ -115,7 +113,7 @@ public class DrawPanel extends JPanel {
 		public void mouseDragged(MouseEvent event) {
 			currentShape.setX2(event.getX()); // repeatedly set the bottom right x-coordinate of the shape
 			currentShape.setY2(event.getY()); // repeatedly set the bottom right x-coordinate of the shape
-			shapes[shapeCount - 1] = currentShape;
+			shapes[shapeCount - 1] = currentShape; // set the new shape to shapes array 
 			repaint(); // call the repaint method to redraw to the JPanel
 			statusLabel.setText(String.format("(%d, %d) ", event.getX(), event.getY())); // update the label with the mouse coordinates
 		} // end mouse dragged method
